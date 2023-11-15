@@ -1,6 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<conio.h>
 
 #define GRN "\x1B[32m"
 #define RED "\x1B[31m"
@@ -10,7 +11,7 @@
 
 void gotoxy(int x, int y)
 {
-  printf("%c[%d;%df", 0x1B, y, x); //x és y koordinálása ASCII kóddal
+  printf("%c[%d;%df", 0x1B, x, y); //x és y koordinálása ASCII kóddal
 }
 
 void clrscreen(void){
@@ -42,34 +43,44 @@ void alakzat(int x, int y, int *ascii, char *color, char *res){
 
 
 int main(){
-  int pulse = 0;
-  char keypress;
-  clrscreen();
-  negyzet(0, 50, 5, 50);
+  /*---------------------------ALAKZAT VALTOZOK-----------------------*/
+  int x_alakzat_1 = 8;
+  int x_alakzat_2 = 3;
+  int y_alakzat_1 = 10;
+  int y_alakzat_2 = 10;
+  int i;
+  /*------------------------------------------------------------------*/
 
   while (1)
   {
-    if(pulse % 2 == 0){
-      alakzat(8, 10, 001, GRN, RESET);
-      alakzat(3, 10, 002, RED, RESET);
-    }else{
-      alakzat(8, 10, 001, WHT, RESET);
-      alakzat(3, 10, 002, MAG, RESET);
-    }
-    pulse++;
-    usleep(500000);
+    clrscreen();
+    negyzet(0, 30, 5, 50);
+    alakzat(x_alakzat_1, y_alakzat_1, 001, GRN, RESET);
+    alakzat(x_alakzat_2, y_alakzat_2, 002, RED, RESET);
 
-    if (kbhit()){
-      keypress = getch();
-      if ((int)keypress == 27)
-      {
-        break;
-      }
+    switch (getch())
+    {
+    case 'd':
+      y_alakzat_1++;
+      break;
+    case 'a':
+      y_alakzat_1--;
+      break;
+    case 's':
+      x_alakzat_1++;
+      break;
+    case 'w':
+      x_alakzat_1--;
+      break;
+    case 'x':
+      exit(1);
     }
+
+    if (y_alakzat_1 == 50 || y_alakzat_1 == 5 || x_alakzat_1 == 1 || x_alakzat_1 == 30)
+    {
+      exit(1);
+    }
+    x_alakzat_2++;
   }
-  
-
-
-
   return 0;
 }
